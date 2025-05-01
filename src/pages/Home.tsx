@@ -1,12 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getAllBook } from '../api/book.ts';
+import type { Livro } from '../api/types';
 
 function Home() {
+  const [livros, setLivros] = useState<Livro[]>([]);
+
   useEffect(() => {
     getAllBook()
       .then(response => {
-        const livros = response.data;
-        console.log('Livros:', livros);
+        setLivros(response.data);
       })
       .catch(error => {
         console.error('Erro ao buscar livros:', error);
@@ -16,7 +18,11 @@ function Home() {
 
   return (
     <div>
-      <h1>Home</h1>
+      <ul>
+        {livros.map(livro => (
+          <li key={livro.livro_id}>{livro.title}</li>
+        ))}
+      </ul>
     </div>
   );
 }
