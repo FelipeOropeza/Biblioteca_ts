@@ -6,3 +6,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 export const getAllBook = () => {
   return axios.get<Livro[]>(`${apiUrl}/livro`);
 };
+
+export const getBookById = (id: number) => {
+  return axios.get<Livro>(`${apiUrl}/livro/${id}`);
+}
