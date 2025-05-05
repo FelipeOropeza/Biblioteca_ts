@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import { getAllBook } from '../api/book.ts';
+import { useNavigate } from 'react-router-dom';
+import { getAllBook } from '../api/book';
 import type { Livro } from '../api/types';
 
 function Home() {
   const [livros, setLivros] = useState<Livro[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAllBook()
-      .then(response => {
-        setLivros(response.data);
-      })
-      .catch(error => {
-        console.error('Erro ao buscar livros:', error);
-      });
+      .then(response => setLivros(response.data))
+      .catch(error => console.error('Erro ao buscar livros:', error));
   }, []);
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="space-y-4">
       {livros.map(livro => (
         <div
           key={livro.livro_id}
@@ -37,7 +35,12 @@ function Home() {
               Publicado em: {new Date(livro.data_publicacao).toLocaleDateString()}
             </p>
             <div className="card-actions justify-end">
-              <button className="btn btn-sm btn-primary">Ver mais</button>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => navigate(`/livro/${livro.livro_id}`)}
+              >
+                Ver mais
+              </button>
             </div>
           </div>
         </div>
